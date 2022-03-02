@@ -3,8 +3,8 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://1.116.123.44:3306/wizardry?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
-    username: root
-    password: wizardry
+    url: jdbc:mysql://1.116.123.44:3306/qingyou?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    username: wiz
+    password: wiz408
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml
