@@ -13,5 +13,5 @@ constellation varchar(3) comment "星座",
 age int(3) comment "年龄",
 avatar text comment "URL坐标",
 occupation varchar(10) comment "职业",
-slat varchar(20) comment '盐值'
+slat varchar(255) comment '盐值'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
