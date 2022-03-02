@@ -5,23 +5,25 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!--与Usermapper接口映射-->
-<mapper namespace = "com.hcj.xm.mapper.Usermapper">
+<mapper namespace="com.wizardry.qingyou_serve.mapper.UserMapper">
     <!--外部映射-->
     <resultMap id="UserEnityMap" type="com.wizardry.qingyou_serve.enity.User">
         <!--目前只有这一个字段需要驼峰命名-->
         <result column="created_date" property="createdDate"/>
     </resultMap>
-    
+
     <!-- 用户模块-插入数据-注册 -->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into users(id,psw,uname,phone,email,created_date ,birthday,signature,
-        sex,location,constellation,age,avatar,occupation,salt)
-values(#{id},#{psw},#{uname},#{phone},#{email},#{createdDate},#{birthday},#{signature},#{sex},
-#{location},#{constellation},#{age},#{avatar},#{occupation},#{salt})
+        insert into users(id, psw, uname, phone, email, created_date, birthday, signature,
+                          sex, location, constellation, age, avatar, occupation, salt)
+        values (#{id}, #{psw}, #{uname}, #{phone}, #{email}, #{createdDate}, #{birthday}, #{signature}, #{sex},
+                #{location}, #{constellation}, #{age}, #{avatar}, #{occupation}, #{salt})
     </insert>
     <!-- 用户模块-name查询-注册or登录 -->
-    <select id="findByUsername" resultType="com.hcj.xm.enity.User">
-        select*from users where uname = #{uname}
+    <select id="findByUsername" resultType="com.wizardry.qingyou_serve.entity.User">
+        select*
+        from users
+        where uname = #{uname}
     </select>
-    
+
 </mapper>

@@ -1,6 +1,9 @@
 package com.wizardry.qingyou_serve.util;
+
 import lombok.Data;
+
 import java.io.Serializable;
+
 @Data
 public class JsonResult<E> implements Serializable {
     //声明相关需要响应给前端的数据
@@ -12,15 +15,17 @@ public class JsonResult<E> implements Serializable {
     private E data;
 
     //无参构造，便于调用
-    public JsonResult(){
+    public JsonResult() {
 
     }
+
     //涉及到状态码
     public JsonResult(Integer state) {
         this.state = state;
     }
+
     //关于异常捕获--构造方法
-    public JsonResult(Throwable throwable){
+    public JsonResult(Throwable throwable) {
         //异常信息传递给massage
         this.massage = throwable.getMessage();
     }

@@ -1,9 +1,8 @@
 package com.wizardry.qingyou_serve.service;
 
-import com.wizardry.qingyou_serve.enity.User;
-import com.wizardry.qingyou_serve.mapper.Usermapper;
-import com.wizardry.qingyou_serve.service.Ex.ServiceException;
-import org.junit.Test;
+import com.wizardry.qingyou_serve.entity.User;
+import com.wizardry.qingyou_serve.service.ex.ServiceException;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

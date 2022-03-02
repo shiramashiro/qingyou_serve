@@ -1,16 +1,18 @@
 package com.wizardry.qingyou_serve.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombock.Data
-import lombock.NoArgsConstructor
-import lombock.AllArgsConstructor
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements Serializable {
-	// 共有私有不影响吗？我原先这里写的private
-	public int id;
+    // 共有私有不影响吗？我原先这里写的private
+    public int id;
     public String psw;
     public String uname;
     public String phone;
@@ -25,14 +27,12 @@ public class User implements Serializable {
     public String avatar;
     public String occupation;
     public String salt;
-    
+
     //equals和hashcod重写
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User)) return false;
-
-        User user = (User) o;
+        if (!(o instanceof User user)) return false;
 
         if (getId() != user.getId()) return false;
         if (getAge() != user.getAge()) return false;
@@ -76,7 +76,7 @@ public class User implements Serializable {
         result = 31 * result + (getSalt() != null ? getSalt().hashCode() : 0);
         return result;
     }
-    
+
     @Override
     public String toString() {
         return "User{" +
@@ -97,10 +97,6 @@ public class User implements Serializable {
                 ", salt='" + salt + '\'' +
                 '}';
     }
-    
-    
-    
-    
-    
-    
+
+
 }

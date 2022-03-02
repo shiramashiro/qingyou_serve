@@ -1,6 +1,7 @@
-package com.wizardry.qingyou_serve.ex;
+package com.wizardry.qingyou_serve.service.ex;
+
 /* 服务器数据库宕机所产生的异常--插入异常类 */
-public class InsertException extends ServiceException{
+public class InsertException extends ServiceException {
     public InsertException() {
         super();
     }

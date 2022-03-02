@@ -1,6 +1,7 @@
-package com.wizardry.qingyou_serve.ex;
+package com.wizardry.qingyou_serve.service.ex;
+
 /* 用户名未能够查询产生的异常 */
-public class UsernameNotFoundException extends ServiceException{
+public class UsernameNotFoundException extends ServiceException {
     public UsernameNotFoundException() {
     }
 

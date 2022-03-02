@@ -1,6 +1,6 @@
 package com.wizardry.qingyou_serve.mapper;
 
-import com.wizardry.qingyou_serve.enity.User;
+import com.wizardry.qingyou_serve.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +18,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 public class UserMapperTests {
     @Autowired
-    private Usermapper usermapper;
-    
+    private UserMapper usermapper;
+
     @Test//插入功能的实现
-    public void insert(){
+    public void insert() {
         User user = new User();
         //设置用户名和密码
         user.setUname("黄先森2");
@@ -29,9 +29,9 @@ public class UserMapperTests {
         Integer rows = usermapper.insert(user);
         System.out.println(rows);
     }
-    
+
     @Test//查询功能的实现
-    public void findByUsername(){
+    public void findByUsername() {
         User user = usermapper.findByUsername("test01");
         System.out.println(user);
     }

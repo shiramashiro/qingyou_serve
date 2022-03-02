@@ -1,6 +1,7 @@
-package com.wizardry.qingyou_serve.ex;
+package com.wizardry.qingyou_serve.service.ex;
+
 /* 密码错误所产生的的异常 */
-public class PasswordNotMatchException extends ServiceException{
+public class PasswordNotMatchException extends ServiceException {
     public PasswordNotMatchException() {
     }
 

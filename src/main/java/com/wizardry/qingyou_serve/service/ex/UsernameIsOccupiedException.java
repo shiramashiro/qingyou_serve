@@ -1,4 +1,5 @@
-package com.wizardry.qingyou_serve.ex;
+package com.wizardry.qingyou_serve.service.ex;
+
 /* 用户名被占用所产生的异常 */
 public class UsernameIsOccupiedException extends ServiceException {
     public UsernameIsOccupiedException() {
