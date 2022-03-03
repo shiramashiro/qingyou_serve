@@ -21,4 +21,15 @@ public interface UserService {
      * @return 返回的是一个用户对象，如果没有查询到用户则返回null
      */
     User login(String username, String password);
+
+    /**
+     * 用户修改密码
+     * @param id    用户id
+     * @param password  用户原始密码
+     * @param newPassword  用户新密码
+     * @return  返回一个用户对象，没有查询到用户返回null
+     */
+
+    void UpdatePsw(Integer id,String password,String newPassword);
+
 }

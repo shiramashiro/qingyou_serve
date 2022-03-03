@@ -24,16 +24,34 @@ public class UserMapperTest {
     public void insert() {
         User user = new User();
         //设置用户名和密码
-        user.setUname("黄先森2");
-        user.setPsw("12312333");
+        user.setUname("WavesBright");
+        user.setPsw("123123");
         Integer rows = usermapper.insert(user);
         System.out.println(rows);
     }
 
     @Test//查询功能的实现
     public void findByUsername() {
-        User user = usermapper.findByUsername("test01");
+        User user = usermapper.findByUsername("WavesBright");
         System.out.println(user);
+    }
+
+    /**
+     * 修改密码功能测试，密码需要加密过的密码才行
+     */
+    @Test
+    public void updatePassword(){
+
+        //Integer row = usermapper.updatePassword(31,"153433");
+        //System.out.println(row);
+    }
+
+    /**
+     *修改密码前缀，查询id，该功能无异常
+     */
+    @Test
+    public void findByUid(){
+        System.out.println(usermapper.findByUid(2));
     }
 
 }

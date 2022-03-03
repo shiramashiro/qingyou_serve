@@ -1,12 +1,10 @@
-package com.wizardry.qingyou.service;
+package com.wizardry.qingyou.service.Impl;
 
 import com.wizardry.qingyou.entity.User;
 import com.wizardry.qingyou.mapper.UserMapper;
 
-import com.wizardry.qingyou.utils.exceptions.InsertException;
-import com.wizardry.qingyou.utils.exceptions.PasswordNotMatchException;
-import com.wizardry.qingyou.utils.exceptions.UsernameIsOccupiedException;
-import com.wizardry.qingyou.utils.exceptions.UsernameNotFoundException;
+import com.wizardry.qingyou.service.UserService;
+import com.wizardry.qingyou.utils.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -86,7 +84,7 @@ public class UserServiceImpl implements UserService {
         User result = usermapper.findByUsername(username);
         if (result == null) {
             //未能查询到，抛出异常
-            throw new UsernameNotFoundException("用户名不存在");
+            throw new UserNotFoundException("用户名不存在");
         }
         //查询到用户，判断输入的密码是否匹配
         //1.先获取用户自身加密过后的密码
@@ -115,6 +113,34 @@ public class UserServiceImpl implements UserService {
         user.setAvatar(result.getAvatar());
         //返回这个用户数据是为了辅助其他页面作展示id，name，头像
         return user;
+    }
+
+    @Override
+    public void UpdatePsw(Integer id, String oldpassword,String newPassword) {
+        // 查询用户是否存在，该用户不存在则抛出异常
+        User result =  usermapper.findByUid(id);
+        if(result == null){
+            // 抛出用户查询不存在的异常--UserNotFoundException
+            throw new UserNotFoundException("用户数据不存在");
+        }
+        // 不为空，判断密码是否和原始密码一致
+        // 将参数密码和本身的盐值进行加密,得到现在加密后的密码
+        String nowPsw = md5Password(oldpassword,result.getSalt());
+        if(!result.getPsw().equals(nowPsw)){
+            // 密码不相同，抛出密码错误异常
+            throw new PasswordNotMatchException("用户输入的密码错误异常");
+        }
+
+        // 将新设置的密码进行加密，再调用修改密码的操作
+        String newMd5Password = md5Password(newPassword,result.getSalt());
+
+        // 执行修改密码的操作
+        Integer rows = usermapper.updatePassword(id,newMd5Password);
+
+        if(rows!=1){
+            throw new UpdateException("在更新时产生未知的异常");
+        }
+
     }
 
 }

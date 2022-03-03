@@ -24,4 +24,14 @@
         where uname = #{uname};
     </select>
 
+    <!-- 资料-修改密码 -->
+    <update id="updatePassword">
+        update users set psw = #{psw} where id =#{id}
+    </update>
+
+    <!-- 修改密码前缀-查询id -->
+    <select id="findByUid" resultType="com.wizardry.qingyou.entity.User">
+        select*from users where id = #{id}
+    </select>
+
 </mapper>
