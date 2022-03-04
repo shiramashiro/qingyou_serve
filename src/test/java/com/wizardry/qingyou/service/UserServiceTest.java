@@ -40,7 +40,7 @@ public class UserServiceTest {
     //登录功能单元测试
     @Test
     public void login(){
-       User user =  userService.login("WavesBright1","111111");
+       User user =  userService.login("2819938960@qq.com","111111");
        System.out.println(user);
     }
 

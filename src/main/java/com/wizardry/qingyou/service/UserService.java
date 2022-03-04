@@ -16,11 +16,12 @@ public interface UserService {
     void reg(User user);
 
     /**
-     * @param username 用户名
-     * @param password 用户密码
-     * @return 返回的是一个用户对象，如果没有查询到用户则返回null
+     *  用户登录
+     * @param account  用户账号
+     * @param password  用户密码
+     * @return  返回的是一个用户对象，如果没有查询到用户则返回null
      */
-    User login(String username, String password);
+    User login(String account,String password);
 
     /**
      * 用户修改密码
@@ -31,5 +32,7 @@ public interface UserService {
      */
 
     void UpdatePsw(Integer id,String password,String newPassword);
+
+    
 
 }

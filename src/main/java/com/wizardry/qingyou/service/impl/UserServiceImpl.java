@@ -1,4 +1,4 @@
-package com.wizardry.qingyou.service.Impl;
+package com.wizardry.qingyou.service.impl;
 
 import com.wizardry.qingyou.entity.User;
 import com.wizardry.qingyou.mapper.UserMapper;
@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void reg(User user) {
+
         //查询该条数据是否存在
         String name = user.getUname();
         //1.调用查询方法,使用结果集
@@ -75,38 +76,42 @@ public class UserServiceImpl implements UserService {
     /**
      * 用户登录-方法实现
      *
-     * @param username 用户名
+     * @param account 用户账号
      * @param password 用户密码
      */
     @Override
-    public User login(String username, String password) {
+    public User login(String account, String password) {
+        // 对用户的账号类型进行判断
         // 根据用户数据查询用户是否存在，如果不存在则抛出异常
-        User result = usermapper.findByUsername(username);
-        if (result == null) {
-            //未能查询到，抛出异常
-            throw new UserNotFoundException("用户名不存在");
+        User result = usermapper.findByUsername(account);
+        User result1 = usermapper.findByUserPhone(account);
+        User result2 = usermapper.findByUserEmail(account);
+        if(result==null){
+            //System.out.println("用户名是空的");
+            if(result1==null){
+                //System.out.println("电话也找不到");
+                if(result2==null){
+                    //System.out.println("邮箱也找不到");
+                    throw new UserNotFoundException("找不到该用户的信息！");
+                }
+                return AccountType(result2,password);
+            }
+            return  AccountType(result1,password);
         }
-        //查询到用户，判断输入的密码是否匹配
+        return AccountType(result,password);
+    }
+    // 辅助辨别账号类型
+    private User AccountType(User result,String password){
         //1.先获取用户自身加密过后的密码
         String MiPassword = result.getPsw();
         //2.获取用户自身的盐值
         String MiSalt = result.getSalt();
         //3.将参数密码和获取到的盐值进行md5的算法进行匹配
-        String newMd5Password = md5Password(password, MiSalt);
-        if (!newMd5Password.equals(MiPassword)) {
+        String newMd5Password = md5Password(password,MiSalt);
+        if(!newMd5Password.equals(MiPassword)){
             //不正确，运行异常
-            throw new PasswordNotMatchException("用户密码错误异常");
+            throw new PasswordNotMatchException("用户输入的密码错误异常");
         }
-        //该字段讨论后确认是否添加
-        /*
-         * 这条字段为1代表删除了该用户，但是这条数据依旧存在
-         * if(user.getIsDelete()==1){
-         *       throw new UsernameNotFoundException("用户名不存在");
-         * }
-         *
-         * */
-
-        // 将用户数据量变小，重新new 一个用户,用户的数据量越小，程序的效率越高
         User user = new User();
         user.setId(result.getId());
         user.setUname(result.getUname());
@@ -115,6 +120,12 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    /**
+     *   用户修改密码模块
+     * @param id    用户id
+     * @param oldpassword 用户旧密码
+     * @param newPassword  用户新密码
+     */
     @Override
     public void UpdatePsw(Integer id, String oldpassword,String newPassword) {
         // 查询用户是否存在，该用户不存在则抛出异常

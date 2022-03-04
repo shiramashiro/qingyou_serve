@@ -1,7 +1,7 @@
 package com.wizardry.qingyou.controller;
 
 import com.wizardry.qingyou.entity.User;
-import com.wizardry.qingyou.service.Impl.UserServiceImpl;
+import com.wizardry.qingyou.service.impl.UserServiceImpl;
 import com.wizardry.qingyou.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,25 +41,30 @@ public class UserController extends BaseController {
      三、这个接口应该是 POST，因为GET是获取资源的接口，
      不是提交数据的接口。再者，GET请求的数据能够明文地看到，
      而 POST 不能。所以 POST 安全一些。*/
+    /**
+     * login请求的一些修改
+     * @param account   用户输入框的值-可以为三个类型的任意一种
+     * @param psw   密码
+     * @param session   无论是哪种类型登录成功，最终只保存用户名的方式
+     * @return  Json对象
+     */
     @RequestMapping(path = {"login"}, method = RequestMethod.POST)
-    public JsonResult<User> login(@RequestBody User user) {
-        User data = userService.login(user.getUname(), user.getPsw());
-        // 泛型可写可不写，因为该请求不涉及返回值类型
-        return new JsonResult<>(OK, data);
-    }
-
-    // 这里我定义了session对象可以从session中获取到用户id和用户名
-    /*@RequestMapping("login")
-    public JsonResult<User> login(String uname, String psw, HttpSession session){
+    public JsonResult<User> login(String account,
+                                  String psw,
+                                  HttpSession session) {
         // 调用接口当中的login方法，该方法先进行查询用户的操作，查询完毕后返回一个user对象
-        User data = userService.login(uname,psw);
+        User data = userService.login(account,psw);
         //向session对象中完成数据的绑定,将用户的id和用户名传递给session对象(该对象是全局的)
         session.setAttribute("id",data.getId());
         session.setAttribute("username",data.getUname());
 
+        /*System.out.println(session.getAttribute("id"));
+        System.out.println(session.getAttribute("username"));*/
         //将这个user对象返回给前端，只能在该页面进行
         return new JsonResult<>(OK,data);//可写可不写
-    }*/
+    }
+
+
 
     // 映射一个请求路径
     @RequestMapping("change_password")

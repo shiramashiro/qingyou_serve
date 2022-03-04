@@ -26,6 +26,20 @@ public interface UserMapper {
     User findByUsername(@Param("uname") String uname);
 
     /**
+     *  通过电话验证用户是否存在
+     * @param phone 用户电话
+     * @return  一条用户数据
+     */
+    User findByUserPhone(String phone);
+
+    /**
+     *  通过邮箱验证用户是否存在
+     * @param email 用户邮箱
+     * @return  一条用户数据
+     */
+    User findByUserEmail(String email);
+
+    /**
      * 根据用户的id来修改密码
      * @param id   用户的id
      * @return  受影响的行数
