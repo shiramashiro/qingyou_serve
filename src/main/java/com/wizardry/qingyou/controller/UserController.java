@@ -18,7 +18,7 @@ public class UserController extends BaseController {
 
     @RequestMapping("reg")
     // 表示数据以Json的方式传递给前端
-    public JsonResult<Void> reg(User user) {
+    public JsonResult<Void> reg(@RequestBody User user) {
         userService.reg(user);
         // 假设有异常产生会自动跳转到基类当中处理的方法
         return new JsonResult<>(OK);
