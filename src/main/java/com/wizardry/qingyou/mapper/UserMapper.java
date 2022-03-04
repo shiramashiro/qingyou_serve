@@ -24,20 +24,13 @@ public interface UserMapper {
      * @return 如果找到，返回用户对应的信息，如果没有找到，返回空值
      */
     User findByUsername(@Param("uname") String uname);
-
+    
     /**
-     *  通过电话验证用户是否存在
-     * @param phone 用户电话
-     * @return  一条用户数据
+     * 验证用户的账号类型
+     * @param user  用户对象
+     * @return  一个数据库中的用户对象
      */
-    User findByUserPhone(String phone);
-
-    /**
-     *  通过邮箱验证用户是否存在
-     * @param email 用户邮箱
-     * @return  一条用户数据
-     */
-    User findByUserEmail(String email);
+    User findByAccountType(User user);
 
     /**
      * 根据用户的id来修改密码

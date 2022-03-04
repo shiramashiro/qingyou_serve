@@ -1,6 +1,7 @@
 package com.wizardry.qingyou.service;
 
 import com.wizardry.qingyou.entity.User;
+import com.wizardry.qingyou.mapper.UserMapper;
 import com.wizardry.qingyou.utils.exceptions.ServiceException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class UserServiceTest {
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserMapper userMapper;
     //插入功能单元测试
     @Test
     public void reg(){
@@ -37,12 +40,17 @@ public class UserServiceTest {
             System.out.println(svex.getMessage());
         }
     }
+
     //登录功能单元测试
     @Test
     public void login(){
-       User user =  userService.login("2819938960@qq.com","111111");
-       System.out.println(user);
+        User user = new User();
+        user.setUname("WavesBright1");
+        user.setPsw("111111");
+        User user1 =  userService.login(user);
+        System.out.println(user1);
     }
+
 
     // 修改密码功能单元测试
     @Test

@@ -24,14 +24,20 @@
         where uname = #{uname};
     </select>
 
-    <!-- 验证用户电话 -->
-    <select id="findByUserPhone" resultType="com.wizardry.qingyou.entity.User">
-        select*from users where phone = #{phone}
-    </select>
-
-    <!--验证用户邮箱-->
-    <select id="findByUserEmail" resultType="com.wizardry.qingyou.entity.User">
-        select*from users where email = #{email}
+    <!-- 验证前台传递过来的账户类型 -->
+    <select id="findByAccountType" resultType="com.wizardry.qingyou.entity.User">
+        select*from users
+        <where>
+            <if test="uname!= null and  email!='' ">
+                uname = #{uname}
+            </if>
+            <if test="phone!= null and  email!='' ">
+                phone = #{phone}
+            </if>
+            <if test="email!= null and  email!='' ">
+                email = #{email}
+            </if>
+        </where>
     </select>
 
     <!-- 资料-修改密码 -->
@@ -43,5 +49,7 @@
     <select id="findByUid" resultType="com.wizardry.qingyou.entity.User">
         select*from users where id = #{id}
     </select>
+
+
 
 </mapper>

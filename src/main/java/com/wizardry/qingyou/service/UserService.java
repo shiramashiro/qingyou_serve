@@ -17,11 +17,10 @@ public interface UserService {
 
     /**
      *  用户登录
-     * @param account  用户账号
-     * @param password  用户密码
+     * @param user 用户对象
      * @return  返回的是一个用户对象，如果没有查询到用户则返回null
      */
-    User login(String account,String password);
+    User login(User user);
 
     /**
      * 用户修改密码

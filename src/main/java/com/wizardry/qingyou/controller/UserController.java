@@ -43,23 +43,21 @@ public class UserController extends BaseController {
      而 POST 不能。所以 POST 安全一些。*/
     /**
      * login请求的一些修改
-     * @param account   用户输入框的值-可以为三个类型的任意一种
-     * @param psw   密码
+     * @param user 用户对象
      * @param session   无论是哪种类型登录成功，最终只保存用户名的方式
      * @return  Json对象
      */
     @RequestMapping(path = {"login"}, method = RequestMethod.POST)
-    public JsonResult<User> login(String account,
-                                  String psw,
-                                  HttpSession session) {
+    public JsonResult<User> login(@RequestBody User user,HttpSession session) {
         // 调用接口当中的login方法，该方法先进行查询用户的操作，查询完毕后返回一个user对象
-        User data = userService.login(account,psw);
+        User data = userService.login(user);
         //向session对象中完成数据的绑定,将用户的id和用户名传递给session对象(该对象是全局的)
         session.setAttribute("id",data.getId());
         session.setAttribute("username",data.getUname());
 
-        /*System.out.println(session.getAttribute("id"));
-        System.out.println(session.getAttribute("username"));*/
+        // 保存在session中的参数
+        System.out.println("该用户的id为："+session.getAttribute("id"));
+        System.out.println("该用户的uname为："+session.getAttribute("username"));
         //将这个user对象返回给前端，只能在该页面进行
         return new JsonResult<>(OK,data);//可写可不写
     }

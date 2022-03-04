@@ -76,34 +76,42 @@ public class UserServiceImpl implements UserService {
     /**
      * 用户登录-方法实现
      *
-     * @param account 用户账号
-     * @param password 用户密码
+     * @param user 用户对象
+     * return 一个压缩过的用户数据
      */
     @Override
-    public User login(String account, String password) {
-        // 对用户的账号类型进行判断
-        // 根据用户数据查询用户是否存在，如果不存在则抛出异常
-        User result = usermapper.findByUsername(account);
-        User result1 = usermapper.findByUserPhone(account);
-        User result2 = usermapper.findByUserEmail(account);
+    public User login(User user) {
+        // 获取密码-明文
+        String psw = user.getPsw();
+        // 验证用户的账号类型
+        User result= usermapper.findByAccountType(user);
         if(result==null){
-            //System.out.println("用户名是空的");
-            if(result1==null){
-                //System.out.println("电话也找不到");
-                if(result2==null){
-                    //System.out.println("邮箱也找不到");
-                    throw new UserNotFoundException("找不到该用户的信息！");
-                }
-                return AccountType(result2,password);
-            }
-            return  AccountType(result1,password);
+            throw new UserNotFoundException("没有查找到该用户");
         }
-        return AccountType(result,password);
-    }
-    // 辅助辨别账号类型
-    private User AccountType(User result,String password){
         //1.先获取用户自身加密过后的密码
         String MiPassword = result.getPsw();
+        //2.获取用户自身的盐值
+        String MiSalt = result.getSalt();
+        //3.将参数密码和获取到的盐值进行md5的算法进行匹配
+        String newMd5Password = md5Password(psw,MiSalt);
+        if(!newMd5Password.equals(MiPassword)){
+            //不正确，运行异常
+            throw new PasswordNotMatchException("用户输入的密码错误异常");
+        }
+        
+        // 用户信息压缩
+        User user1 = new User();
+        user1.setId(result.getId());
+        user1.setUname(result.getUname());
+        user1.setAvatar(result.getAvatar());
+        return user1;
+
+    }
+    /*// 辅助辨别账号类型
+    private User accountType(User result,String password){
+        //1.先获取用户自身加密过后的密码
+        String MiPassword = result.getPsw();
+        System.out.println("获取到的密码为"+MiPassword);
         //2.获取用户自身的盐值
         String MiSalt = result.getSalt();
         //3.将参数密码和获取到的盐值进行md5的算法进行匹配
@@ -116,9 +124,10 @@ public class UserServiceImpl implements UserService {
         user.setId(result.getId());
         user.setUname(result.getUname());
         user.setAvatar(result.getAvatar());
+        System.out.println(user);
         //返回这个用户数据是为了辅助其他页面作展示id，name，头像
         return user;
-    }
+    }*/
 
     /**
      *   用户修改密码模块
