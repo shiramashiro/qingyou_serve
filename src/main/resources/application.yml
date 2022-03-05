@@ -6,5 +6,11 @@ spring:
     url: jdbc:mysql://1.116.123.44:3306/qingyou?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
     username: wiz
     password: wiz408
+  mail:
+    username: qingyou_serve@163.com # 网易邮箱号
+    password: ENTOSAYCQCKIRXCM  #授权码
+    host: smtp.163.com  #云服务地址
+    default: utf-8  
+
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml

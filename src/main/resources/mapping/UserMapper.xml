@@ -17,13 +17,6 @@
         #{location}, #{constellation}, #{age}, #{avatar}, #{occupation}, #{salt})
     </insert>
 
-    <!-- 用户模块-name查询-注册or登录 -->
-    <select id="findByUsername" resultMap="userMap">
-        select *
-        from users
-        where uname = #{uname};
-    </select>
-
     <!-- 验证前台传递过来的账户类型 -->
     <select id="findByAccountType" resultType="com.wizardry.qingyou.entity.User">
         select*from users

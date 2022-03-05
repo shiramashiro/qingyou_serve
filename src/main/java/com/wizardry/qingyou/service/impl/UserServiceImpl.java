@@ -25,43 +25,40 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void reg(User user) {
+        // 查询该用户是否存在-用户名查询
+        String username = user.getUname();
+        String phone = user.getPhone();
+        User resultUname = usermapper.findByUsername(username);
+        if(resultUname != null){
+            throw new UsernameIsOccupiedException("用户名已被注册");
+        }else{
+            User resultPhone = usermapper.findByPhone(phone);
+            if(resultPhone != null){
+                System.out.println("电话不唯一sout");
+                throw new PhoneIsOccupiedException("电话不唯一");
+            }
+            //密码加密，如果前段加密过，后端则不需要处理加密
+            String oldpsw = user.getPsw();
+            //随机生成一个盐值,转换成字符，再大写
+            String salt = UUID.randomUUID().toString().toUpperCase();
+            //将密码和盐值作为一个整体进行处理,调用自建加密算法
+            String newpsw = md5Password(oldpsw, salt);
+            //4.插入数据之前，补全剩下的信息
+            Date date = new Date();
+            user.setCreatedDate(date);
+            //将新密码重新传递给user对象
+            user.setPsw(newpsw);
+            //传递盐值
+            user.setSalt(salt);
 
-        //查询该条数据是否存在
-        String name = user.getUname();
-        //1.调用查询方法,使用结果集
-        User result = usermapper.findByUsername(name);
-        //2.判断用户名是否被占用
-        if (result != null) {
-            //抛出用户名被占用的异常
-            throw new UsernameIsOccupiedException("用户名被占用！");
+            //5.插入数据,执行业务注册功能的实现(row==1)
+            Integer rows = usermapper.insert(user);
+
+            //6.插入不一定会成功，极小概率出现宕机
+            if (rows != 1) {
+                throw new InsertException("在用户注册的过程中产生了未知异常");
+            }
         }
-
-        //3.密码加密处理
-        /**
-         * md5算法，密码加密
-         *      密码加密处理的实现，md5算法形式：67dasdsada-455dasdsdada-dwasd456das-456456
-         * */
-        String oldpsw = user.getPsw();
-        //随机生成一个盐值,转换成字符，再大写
-        String salt = UUID.randomUUID().toString().toUpperCase();
-        //将密码和盐值作为一个整体进行处理,调用自建加密算法
-        String newpsw = md5Password(oldpsw, salt);
-        //4.插入数据之前，补全剩下的信息
-        Date date = new Date();
-        user.setCreatedDate(date);
-        //将新密码重新传递给user对象
-        user.setPsw(newpsw);
-        //传递盐值
-        user.setSalt(salt);
-
-        //5.插入数据,执行业务注册功能的实现(row==1)
-        Integer rows = usermapper.insert(user);
-
-        //6.插入不一定会成功，极小概率出现宕机
-        if (rows != 1) {
-            throw new InsertException("在用户注册的过程中产生了未知异常");
-        }
-
     }
 
     //md5加密算法--供reg和其他该类调用
@@ -83,51 +80,79 @@ public class UserServiceImpl implements UserService {
     public User login(User user) {
         // 获取密码-明文
         String psw = user.getPsw();
+        // 用户的登录方式
+        String actype =AccountType(user);
         // 验证用户的账号类型
-        User result= usermapper.findByAccountType(user);
-        if(result==null){
-            throw new UserNotFoundException("没有查找到该用户");
+        User result=null;
+        switch(actype){
+            case "uname":
+                String uname = user.getUname();
+                result = usermapper.findByUsername(uname);
+                if(result==null){
+                    throw new UsernameNotFoundException("用户名未注册");
+                }
+                // 调用加密算法
+                AcctypePsw(result,psw);
+                break;
+            case "phone":
+                String phone = user.getPhone();
+                result = usermapper.findByPhone(phone);
+                if(result==null){
+                    throw new PhoneNotFoundException("该用户电话未注册");
+                }
+                AcctypePsw(result,psw);
+                break;
+            case "email":
+                String email = user.getEmail();
+                result = usermapper.findByEmail(email);
+                if(result==null){
+                    throw new EmailNotFoundException("该用户邮箱未注册");
+                }
+                AcctypePsw(result,psw);
+                break;
+            default:
+                break;
         }
+        System.out.println("用户信息为："+result);
+        return result;
+    }
+
+    // 验证加密
+    private User AcctypePsw(User user,String psw){
         //1.先获取用户自身加密过后的密码
-        String MiPassword = result.getPsw();
+        String MiPassword = user.getPsw();
         //2.获取用户自身的盐值
-        String MiSalt = result.getSalt();
+        String MiSalt = user.getSalt();
         //3.将参数密码和获取到的盐值进行md5的算法进行匹配
         String newMd5Password = md5Password(psw,MiSalt);
         if(!newMd5Password.equals(MiPassword)){
             //不正确，运行异常
             throw new PasswordNotMatchException("用户输入的密码错误异常");
         }
-        
         // 用户信息压缩
         User user1 = new User();
-        user1.setId(result.getId());
-        user1.setUname(result.getUname());
-        user1.setAvatar(result.getAvatar());
+        user1.setId(user.getId());
+        user1.setUname(user.getUname());
+        user1.setAvatar(user.getAvatar());
         return user1;
+    }
+
+    // 用户账号登录类型
+    private String AccountType(User user){
+        if(user.getUname()==null){
+            if(user.getPhone()==null){
+                    //System.out.println("电话为空,必然为邮箱登录");
+                    return "email";
+            }else{
+                //System.out.println("电话登录");
+                return "phone";
+            }
+        }else{
+            //System.out.println("用户名登录");
+            return "uname";
+        }
 
     }
-    /*// 辅助辨别账号类型
-    private User accountType(User result,String password){
-        //1.先获取用户自身加密过后的密码
-        String MiPassword = result.getPsw();
-        System.out.println("获取到的密码为"+MiPassword);
-        //2.获取用户自身的盐值
-        String MiSalt = result.getSalt();
-        //3.将参数密码和获取到的盐值进行md5的算法进行匹配
-        String newMd5Password = md5Password(password,MiSalt);
-        if(!newMd5Password.equals(MiPassword)){
-            //不正确，运行异常
-            throw new PasswordNotMatchException("用户输入的密码错误异常");
-        }
-        User user = new User();
-        user.setId(result.getId());
-        user.setUname(result.getUname());
-        user.setAvatar(result.getAvatar());
-        System.out.println(user);
-        //返回这个用户数据是为了辅助其他页面作展示id，name，头像
-        return user;
-    }*/
 
     /**
      *   用户修改密码模块
@@ -141,7 +166,7 @@ public class UserServiceImpl implements UserService {
         User result =  usermapper.findByUid(id);
         if(result == null){
             // 抛出用户查询不存在的异常--UserNotFoundException
-            throw new UserNotFoundException("用户数据不存在");
+            throw new UsernameNotFoundException("用户数据不存在");
         }
         // 不为空，判断密码是否和原始密码一致
         // 将参数密码和本身的盐值进行加密,得到现在加密后的密码

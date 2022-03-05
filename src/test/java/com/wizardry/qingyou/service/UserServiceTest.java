@@ -25,8 +25,9 @@ public class UserServiceTest {
             //快捷键 ctrl+alt+T，选择try catch添加异常的捕获
             User user = new User();
             //设置用户名和密码
-            user.setUname("WavesBright1");
-            user.setPsw("010115");
+            user.setUname("WavesBright3");
+            user.setPsw("111111");
+            user.setPhone("15882059433");
             userService.reg(user);
             //如果插入成功
             System.out.println("OK");
@@ -45,8 +46,9 @@ public class UserServiceTest {
     @Test
     public void login(){
         User user = new User();
-        user.setUname("WavesBright1");
+        user.setUname("WavesBright3");
         user.setPsw("111111");
+        user.setPhone("15882059433");
         User user1 =  userService.login(user);
         System.out.println(user1);
     }

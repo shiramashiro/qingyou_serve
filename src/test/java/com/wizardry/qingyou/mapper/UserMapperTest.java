@@ -50,8 +50,31 @@ public class UserMapperTest {
      *修改密码前缀，查询id，该功能无异常
      */
     @Test
-    public void findByUid(){
-        System.out.println(usermapper.findByUid(2));
+    public void findByUid()
+    {
+        User user = usermapper.findByUsername("WavesBright");
+        User user1 = usermapper.findByPhone("13438912557");
+        System.out.println(user);
+        System.out.println(user1);
+    }
+
+    @Test
+    public void findByAccountType(){
+        User result;
+        String actype = "uname";
+
+        switch(actype){
+            case "uname":
+                System.out.println("ok");
+                result = usermapper.findByUsername("");
+                break;
+            case "":
+
+                break;
+            case " ":
+
+                break;
+        }
     }
 
 }
