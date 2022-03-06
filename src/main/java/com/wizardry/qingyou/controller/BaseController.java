@@ -5,47 +5,35 @@ import com.wizardry.qingyou.utils.exceptions.*;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 /* 异常处理类的基类 */
 public class BaseController {
-     // 注册成功
-     public static int regSuccess = 2000;
+    public final static Map<String,Integer> map = new HashMap();
+    static {
+        map.put("手机号不正确",5000 );
+        map.put("用户名不正确",5001);
+        map.put("电子邮箱不正确",5002);
+        map.put("密码不正确",5003);
+        map.put("手机号已存在",5004);
+        map.put("用户名已存在",5005);
+    }
+    // 注册成功
+     public static int regSuccess = 2001;
      // 登陆成功
-     public static int loginSuccecc = 2001;
+     public static int loginSuccecc = 2002;
     //请求处理的方法
     //自动将异常对象传递给此方法的参数列表上
     //当项目中产生了异常，被统一拦截到此方法当中，这个方法就相当于处理方法，方法的返回值传递给前端
-
     @ExceptionHandler(ServiceException.class)// 这个注解修饰的的方法，用于统一处理抛出的异常
     public JsonResult<Void> handleException(Throwable e){
         JsonResult<Void> result = new JsonResult<>(e);
-        if(e instanceof InsertException){
-            //如果这个异常属于用户名异常
-            result.setState(6000);
-            result.setMassage("插入数据时发生未知异常！");
-        }else if(e instanceof UpdateException){
-            result.setState(6001);
-            // 修改密码的时候出现的高级异常
-            result.setMassage("更新数据时发生未知异常！");
-        }else if(e instanceof UsernameNotFoundException){
-            result.setState(5001);
-            result.setMassage("该用户的用户名未被注册！");
-        }else if(e instanceof PhoneNotFoundException ){
-            result.setState(5002);
-            result.setMassage("该用户的电话未被注册！");
-        }else if(e instanceof EmailNotFoundException ){
-            result.setState(5003);
-            result.setMassage("该用户的邮箱未被注册！");
-        }else if(e instanceof UsernameIsOccupiedException ){
-            result.setState(5004);
-            result.setMassage("用户名已经被占用！");
-        }else if(e instanceof PhoneIsOccupiedException){
-            result.setState(5005);
-            result.setMassage("该手机号已被注册！");
-        }else if(e instanceof PasswordNotMatchException){
-            result.setState(4000);
-            result.setMassage("用户输入密码错误的异常");
-        }
+        String msg = e.getMessage();
+        Integer state = map.get(msg);
+        System.out.println("错误信息为："+msg+"匹配到的状态码为："+state);
+        result.setState(state);
+        result.setMassage(msg);
         return result;
     }
 

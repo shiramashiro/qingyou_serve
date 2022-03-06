@@ -21,10 +21,10 @@
     <select id="findByAccountType" resultType="com.wizardry.qingyou.entity.User">
         select*from users
         <where>
-            <if test="uname!= null and  email!='' ">
+            <if test="uname!= null and  uname!='' ">
                 uname = #{uname}
             </if>
-            <if test="phone!= null and  email!='' ">
+            <if test="phone!= null and  phone!='' ">
                 phone = #{phone}
             </if>
             <if test="email!= null and  email!='' ">

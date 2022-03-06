@@ -30,12 +30,11 @@ public class UserServiceImpl implements UserService {
         String phone = user.getPhone();
         User resultUname = usermapper.findByUsername(username);
         if(resultUname != null){
-            throw new UsernameIsOccupiedException("用户名已被注册");
+            throw new UsernameIsOccupiedException("用户名已存在");
         }else{
             User resultPhone = usermapper.findByPhone(phone);
             if(resultPhone != null){
-                System.out.println("电话不唯一sout");
-                throw new PhoneIsOccupiedException("电话不唯一");
+                throw new PhoneIsOccupiedException("手机号已存在");
             }
             //密码加密，如果前段加密过，后端则不需要处理加密
             String oldpsw = user.getPsw();
@@ -56,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
             //6.插入不一定会成功，极小概率出现宕机
             if (rows != 1) {
-                throw new InsertException("在用户注册的过程中产生了未知异常");
+                throw new InsertException("注册过程发生未知异常");
             }
         }
     }
@@ -86,34 +85,30 @@ public class UserServiceImpl implements UserService {
         User result=null;
         switch(actype){
             case "uname":
-                String uname = user.getUname();
-                result = usermapper.findByUsername(uname);
+                result = usermapper.findByAccountType(user);
                 if(result==null){
-                    throw new UsernameNotFoundException("用户名未注册");
+                    throw new UsernameNotFoundException("用户名不正确");
                 }
                 // 调用加密算法
                 AcctypePsw(result,psw);
                 break;
             case "phone":
-                String phone = user.getPhone();
-                result = usermapper.findByPhone(phone);
+                result = usermapper.findByAccountType(user);
                 if(result==null){
-                    throw new PhoneNotFoundException("该用户电话未注册");
+                    throw new PhoneNotFoundException("手机号不正确");
                 }
                 AcctypePsw(result,psw);
                 break;
             case "email":
-                String email = user.getEmail();
-                result = usermapper.findByEmail(email);
+                result = usermapper.findByAccountType(user);
                 if(result==null){
-                    throw new EmailNotFoundException("该用户邮箱未注册");
+                    throw new EmailNotFoundException("电子邮箱不正确");
                 }
                 AcctypePsw(result,psw);
                 break;
             default:
                 break;
         }
-        System.out.println("用户信息为："+result);
         return result;
     }
 
@@ -127,7 +122,7 @@ public class UserServiceImpl implements UserService {
         String newMd5Password = md5Password(psw,MiSalt);
         if(!newMd5Password.equals(MiPassword)){
             //不正确，运行异常
-            throw new PasswordNotMatchException("用户输入的密码错误异常");
+            throw new PasswordNotMatchException("密码不正确");
         }
         // 用户信息压缩
         User user1 = new User();
@@ -141,14 +136,14 @@ public class UserServiceImpl implements UserService {
     private String AccountType(User user){
         if(user.getUname()==null){
             if(user.getPhone()==null){
-                    //System.out.println("电话为空,必然为邮箱登录");
+                    System.out.println("为邮箱登录");
                     return "email";
             }else{
-                //System.out.println("电话登录");
+                System.out.println("电话登录");
                 return "phone";
             }
         }else{
-            //System.out.println("用户名登录");
+            System.out.println("用户名登录");
             return "uname";
         }
 

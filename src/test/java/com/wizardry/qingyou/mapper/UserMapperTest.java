@@ -76,6 +76,12 @@ public class UserMapperTest {
                 break;
         }
     }
+    @Test
+    // 随机验证码的测试
+    public void Code(){
+        String code = Integer.toString((int) ((Math.random() * 9 + 1) * 100000));
+        System.out.println(code);
+    }
 
 }
 

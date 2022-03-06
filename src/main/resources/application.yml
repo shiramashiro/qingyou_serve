@@ -7,10 +7,10 @@ spring:
     username: wiz
     password: wiz408
   mail:
-    username: qingyou_serve@163.com # 网易邮箱号
-    password: ENTOSAYCQCKIRXCM  #授权码
-    host: smtp.163.com  #云服务地址
-    default: utf-8  
+    username: qingyou_serve@163.com
+    password: ENTOSAYCQCKIRXCM
+    host: smtp.163.com
+    default: utf-8
 
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml

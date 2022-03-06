@@ -40,8 +40,8 @@ public class UserController extends BaseController {
         session.setAttribute("username",data.getUname());
 
         // 保存在session中的参数
-        System.out.println("该用户的id为："+session.getAttribute("id"));
-        System.out.println("该用户的uname为："+session.getAttribute("username"));
+        /*System.out.println("该用户的id为："+session.getAttribute("id"));
+        System.out.println("该用户的uname为："+session.getAttribute("username"));*/
         //将这个user对象返回给前端，只能在该页面进行
         return new JsonResult<>(loginSuccecc,data);//可写可不写
     }
