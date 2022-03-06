@@ -21,8 +21,9 @@ repositories {
 dependencies {
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'junit:junit:4.13.1'
-    implementation 'org.springframework.boot:spring-boot-starter-mail:2.2.2.RELEASE'
+    implementation 'org.springframework.data:spring-data-redis:2.6.2'
+    implementation 'junit:junit:4.13.2'
+    implementation 'org.springframework.boot:spring-boot-starter-mail:2.6.4'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
