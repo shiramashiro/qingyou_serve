@@ -13,7 +13,7 @@ public interface UserService {
      *
      * @param user 用户这个对象的数据
      */
-    void reg(User user);
+    void register(User user);
 
     /**
      *  用户登录

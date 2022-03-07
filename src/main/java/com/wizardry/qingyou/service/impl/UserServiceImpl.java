@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
      * @param user 用户这个对象的数据
      */
     @Override
-    public void reg(User user) {
+    public void register(User user) {
         // 查询该用户是否存在-用户名查询
         String username = user.getUname();
         String phone = user.getPhone();

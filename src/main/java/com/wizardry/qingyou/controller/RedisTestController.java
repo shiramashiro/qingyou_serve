@@ -15,6 +15,7 @@ public class RedisTestController {
 
     /**
      * 查询 key 所对应的 value
+     *
      * @param key
      * @return
      */
@@ -25,6 +26,7 @@ public class RedisTestController {
 
     /**
      * 插入 key
+     *
      * @param key
      * @param value
      */
@@ -35,6 +37,7 @@ public class RedisTestController {
 
     /**
      * 删除 key 所对应的 value
+     *
      * @param key
      */
     @RequestMapping(value = "redis/delete/key/{key}", method = RequestMethod.GET)
@@ -44,6 +47,7 @@ public class RedisTestController {
 
     /**
      * 修改 key 所对应的 value
+     *
      * @param key
      * @param value
      */

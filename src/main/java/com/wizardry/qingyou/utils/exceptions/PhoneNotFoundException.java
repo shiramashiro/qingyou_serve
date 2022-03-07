@@ -1,6 +1,6 @@
 package com.wizardry.qingyou.utils.exceptions;
 
-public class PhoneNotFoundException extends ServiceException{
+public class PhoneNotFoundException extends ServiceException {
     public PhoneNotFoundException() {
         super();
     }
@@ -21,6 +21,5 @@ public class PhoneNotFoundException extends ServiceException{
         super(message, cause, enableSuppression, writableStackTrace);
     }
 
-    
 
 }

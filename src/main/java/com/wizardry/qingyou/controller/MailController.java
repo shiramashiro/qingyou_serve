@@ -23,8 +23,8 @@ public class MailController extends BaseController {
     private JavaMailSender sender;
 
     @RequestMapping("send")
-    public JsonResult<Void> send(String to, String subject, String content){
-        System.out.println("发件人为"+from);
+    public JsonResult<Void> send(String to, String subject, String content) {
+        System.out.println("发件人为" + from);
         // 短消息对象
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom(from);

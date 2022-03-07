@@ -12,9 +12,9 @@
     <!-- 用户模块-插入数据-注册 -->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into users(id, psw, uname, phone, email, created_date, birthday, signature,
-        sex, location, constellation, age, avatar, occupation, salt)
+                          sex, location, constellation, age, avatar, occupation, salt)
         values (#{id}, #{psw}, #{uname}, #{phone}, #{email}, #{createdDate}, #{birthday}, #{signature}, #{sex},
-        #{location}, #{constellation}, #{age}, #{avatar}, #{occupation}, #{salt})
+                #{location}, #{constellation}, #{age}, #{avatar}, #{occupation}, #{salt})
     </insert>
 
     <!-- 验证前台传递过来的账户类型 -->
@@ -35,14 +35,17 @@
 
     <!-- 资料-修改密码 -->
     <update id="updatePassword">
-        update users set psw = #{psw} where id =#{id}
+        update users
+        set psw = #{psw}
+        where id = #{id}
     </update>
 
     <!-- 修改密码前缀-查询id -->
     <select id="findByUid" resultType="com.wizardry.qingyou.entity.User">
-        select*from users where id = #{id}
+        select*
+        from users
+        where id = #{id}
     </select>
-
 
 
 </mapper>

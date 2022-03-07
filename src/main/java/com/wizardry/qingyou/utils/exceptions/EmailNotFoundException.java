@@ -1,6 +1,6 @@
 package com.wizardry.qingyou.utils.exceptions;
 
-public class EmailNotFoundException extends ServiceException{
+public class EmailNotFoundException extends ServiceException {
     public EmailNotFoundException() {
         super();
     }

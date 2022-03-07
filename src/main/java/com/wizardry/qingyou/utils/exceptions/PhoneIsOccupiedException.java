@@ -1,6 +1,6 @@
 package com.wizardry.qingyou.utils.exceptions;
 
-public class PhoneIsOccupiedException extends ServiceException{
+public class PhoneIsOccupiedException extends ServiceException {
     public PhoneIsOccupiedException() {
         super();
     }
