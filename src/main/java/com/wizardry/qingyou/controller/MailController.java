@@ -1,10 +1,8 @@
 package com.wizardry.qingyou.controller;
 
+import com.wizardry.qingyou.service.impl.UserCodeimpl;
 import com.wizardry.qingyou.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,26 +11,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 @RequestMapping("mail")
-
 public class MailController extends BaseController {
-    // 发件人
-    @Value("${spring.mail.username}")
-    private String from;
     @Autowired
-    // 全局操纵发送我们的java邮件
-    private JavaMailSender sender;
-
+    private UserCodeimpl usercodimpl;
+    // 发送验证码
     @RequestMapping("send")
-    public JsonResult<Void> send(String to, String subject, String content) {
-        System.out.println("发件人为" + from);
-        // 短消息对象
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setFrom(from);
-        simpleMailMessage.setTo(to);
-        simpleMailMessage.setSubject(subject);
-        simpleMailMessage.setText(content);
-        sender.send(simpleMailMessage);
+    public JsonResult<Void> send(String userEmail){
+        // 目前就给用户的邮箱
+        usercodimpl.StorageCode(userEmail);
+        //验证码发送成功！
         return new JsonResult<>(2003);
+        //return "success";
+    }
+    @RequestMapping("confirm")
+    // 得到验证码进行判断
+    public JsonResult<Void> identification(String userEmail,String code){
+        usercodimpl.codeConfirm(userEmail,code);
+        return new JsonResult<>(2004);
     }
 
 }

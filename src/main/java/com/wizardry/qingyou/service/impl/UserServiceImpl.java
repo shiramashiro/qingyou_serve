@@ -18,6 +18,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper usermapper;
 
+
+
     /**
      * 用户注册-方法实现
      *
@@ -26,22 +28,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(User user) {
         // 查询该用户是否存在-用户名查询
-        String username = user.getUname();
-        String phone = user.getPhone();
-        User resultUname = usermapper.findByUsername(username);
-        if(resultUname != null){
-            throw new UsernameIsOccupiedException("用户名已存在");
+        User userInfo = usermapper.findByUsername(user.getUname());
+        if(userInfo != null){
+            throw new UserIsOccupiedException("用户名已存在");
         }else{
-            User resultPhone = usermapper.findByPhone(phone);
+            User resultPhone = usermapper.findByPhone(user.getPhone());
             if(resultPhone != null){
-                throw new PhoneIsOccupiedException("手机号已存在");
+                throw new UserIsOccupiedException("手机号已存在");
             }
-            //密码加密，如果前段加密过，后端则不需要处理加密
-            String oldpsw = user.getPsw();
             //随机生成一个盐值,转换成字符，再大写
             String salt = UUID.randomUUID().toString().toUpperCase();
             //将密码和盐值作为一个整体进行处理,调用自建加密算法
-            String newpsw = md5Password(oldpsw, salt);
+            String newpsw = md5Password(user.getPsw(), salt);
             //4.插入数据之前，补全剩下的信息
             Date date = new Date();
             user.setCreatedDate(date);
@@ -57,6 +55,7 @@ public class UserServiceImpl implements UserService {
             if (rows != 1) {
                 throw new InsertException("注册过程发生未知异常");
             }
+
         }
     }
 
@@ -87,7 +86,7 @@ public class UserServiceImpl implements UserService {
             case "uname":
                 result = usermapper.findByAccountType(user);
                 if(result==null){
-                    throw new UsernameNotFoundException("用户名不正确");
+                    throw new UserNotFoundException("用户名不正确");
                 }
                 // 调用加密算法
                 AcctypePsw(result,psw);
@@ -95,14 +94,14 @@ public class UserServiceImpl implements UserService {
             case "phone":
                 result = usermapper.findByAccountType(user);
                 if(result==null){
-                    throw new PhoneNotFoundException("手机号不正确");
+                    throw new UserNotFoundException("手机号不正确");
                 }
                 AcctypePsw(result,psw);
                 break;
             case "email":
                 result = usermapper.findByAccountType(user);
                 if(result==null){
-                    throw new EmailNotFoundException("电子邮箱不正确");
+                    throw new UserNotFoundException("电子邮箱不正确");
                 }
                 AcctypePsw(result,psw);
                 break;
@@ -114,13 +113,9 @@ public class UserServiceImpl implements UserService {
 
     // 验证加密
     private User AcctypePsw(User user,String psw){
-        //1.先获取用户自身加密过后的密码
-        String MiPassword = user.getPsw();
-        //2.获取用户自身的盐值
-        String MiSalt = user.getSalt();
         //3.将参数密码和获取到的盐值进行md5的算法进行匹配
-        String newMd5Password = md5Password(psw,MiSalt);
-        if(!newMd5Password.equals(MiPassword)){
+        String newMd5Password = md5Password(psw,user.getSalt());
+        if(!newMd5Password.equals(user.getPsw())){
             //不正确，运行异常
             throw new PasswordNotMatchException("密码不正确");
         }
@@ -161,7 +156,7 @@ public class UserServiceImpl implements UserService {
         User result =  usermapper.findByUid(id);
         if(result == null){
             // 抛出用户查询不存在的异常--UserNotFoundException
-            throw new UsernameNotFoundException("用户数据不存在");
+            throw new UserNotFoundException("用户数据不存在");
         }
         // 不为空，判断密码是否和原始密码一致
         // 将参数密码和本身的盐值进行加密,得到现在加密后的密码

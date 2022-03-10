@@ -19,6 +19,11 @@ public class BaseController {
         map.put("密码不正确", 5003);
         map.put("手机号已存在", 5004);
         map.put("用户名已存在", 5005);
+        map.put("用户名已存在", 5005);
+        map.put("用户名已存在", 5005);
+        map.put("验证码未过期",5006);
+        map.put("验证码错误",5007);
+        map.put("验证码过期",5008);
     }
 
     // 注册成功

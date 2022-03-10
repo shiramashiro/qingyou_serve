@@ -10,6 +10,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class User implements Serializable {
 
     private int id;
