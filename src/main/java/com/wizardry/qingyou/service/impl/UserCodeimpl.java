@@ -2,6 +2,7 @@ package com.wizardry.qingyou.service.impl;
 
 import com.wizardry.qingyou.service.IUserCode;
 import com.wizardry.qingyou.utils.RedisUtils;
+import com.wizardry.qingyou.utils.SimpleMailMessageUtil;
 import com.wizardry.qingyou.utils.exceptions.CodeErrorException;
 import com.wizardry.qingyou.utils.exceptions.CodeNotExpiredException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,10 @@ public class UserCodeimpl implements IUserCode {
     // 发件人
     @Value("${spring.mail.username}")
     private String from;
-    @Autowired
-    // 全局操纵发送我们的java邮件
+
+    @Autowired // 全局操纵发送我们的java邮件
     private JavaMailSender sender;
+
     @Autowired
     private RedisUtils redisResult;
 
@@ -41,7 +43,7 @@ public class UserCodeimpl implements IUserCode {
         String code = UUID.randomUUID().toString().substring(0,5);
         //String code = (int)((Math.random() * 9 + 1)* 10000) +"";
         // 短消息对象
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        SimpleMailMessage simpleMailMessage = SimpleMailMessageUtil.getSimpleMailMessageutil();
         simpleMailMessage.setFrom(from);
         simpleMailMessage.setTo(userEmail);
         simpleMailMessage.setSubject("找回密码");
