@@ -1,6 +1,6 @@
 package com.wizardry.qingyou.controller;
 
-import com.wizardry.qingyou.service.impl.UserCodeimpl;
+import com.wizardry.qingyou.service.impl.UserCodeImpl;
 import com.wizardry.qingyou.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("mail")
 public class MailController extends BaseController {
     @Autowired
-    private UserCodeimpl usercodimpl;
+    private UserCodeImpl usercodImpl;
     // 发送验证码
     @RequestMapping("send")
     public JsonResult<Void> send(String userEmail){
         // 目前就给用户的邮箱
-        usercodimpl.StorageCode(userEmail);
+        usercodImpl.StorageCode(userEmail);
         //验证码发送成功！
         return new JsonResult<>(2003);
         //return "success";
@@ -26,7 +26,7 @@ public class MailController extends BaseController {
     @RequestMapping("confirm")
     // 得到验证码进行判断
     public JsonResult<Void> identification(String userEmail,String code){
-        usercodimpl.codeConfirm(userEmail,code);
+        usercodImpl.codeConfirm(userEmail,code);
         return new JsonResult<>(2004);
     }
 

@@ -15,5 +15,14 @@ spring:
     host: 1.116.123.44
     password: wizardry
 
+aliyun:
+  oss:
+    config:
+      endpoint: oss-cn-chengdu.aliyuncs.com
+      key-id: LTAI5t6HyQ1rKfH4xwpWKrnc
+      key-secret: daHsHYPAb6RmWvjWzthR4qniryZ5iX
+      bucket-name: generic-data
+
+
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml

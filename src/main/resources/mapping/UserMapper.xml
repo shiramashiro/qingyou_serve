@@ -47,5 +47,9 @@
         where id = #{id}
     </select>
 
+    <!-- 更新用户的头像 -->
+    <update id="updateAvatar">
+        update users set avatar = #{avatar} where id = #{id}
+    </update>
 
 </mapper>

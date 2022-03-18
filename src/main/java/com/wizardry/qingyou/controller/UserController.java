@@ -1,21 +1,44 @@
 package com.wizardry.qingyou.controller;
 
+import com.wizardry.qingyou.controller.ex.FileEmptyException;
+import com.wizardry.qingyou.controller.ex.FileSizeException;
+import com.wizardry.qingyou.controller.ex.FileTypeException;
 import com.wizardry.qingyou.entity.User;
 import com.wizardry.qingyou.service.impl.UserServiceImpl;
 import com.wizardry.qingyou.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin
 @RequestMapping("users")
 public class UserController extends BaseController {
-
+    // 用户模块业务层
     @Autowired
     private UserServiceImpl userService;
 
+    // 设置一个常量，该常量设置为10M，用于比对，注：springMVC对于大小默认为字节
+    private final Integer AVATAR_MAX_SIZE = 10 * 1024 *1024;
+    // 设置上传文件的类型
+    public static final List<String> AVATAR_TYPE = new ArrayList<>();
+    // 静态代码块,目前就三种
+    static{
+        AVATAR_TYPE.add("image/jpeg");
+        AVATAR_TYPE.add("image/png");
+        AVATAR_TYPE.add("image/webp");
+    }
+    private final String objName = "wizardry/imgs/avatars/";
+
+    /**
+     * 用户注册
+     * @param user 用户数据
+     * @return Json对象
+     */
     @RequestMapping("register")
     // 表示数据以Json的方式传递给前端
     public JsonResult<Void> register(@RequestBody User user) {
@@ -48,8 +71,14 @@ public class UserController extends BaseController {
     }
 
 
-    // 映射一个请求路径
-    @RequestMapping("change_password")
+    /**
+     * 用户修改密码
+     * @param session seesion对象
+     * @param oldPassword 旧密码
+     * @param newPassword 新密码
+     * @return Json对象
+     */
+    @RequestMapping(path = {"update/password"}, method = RequestMethod.POST)
     public JsonResult<Void> changePassword(HttpSession session,
                                            String oldPassword,
                                            String newPassword) {
@@ -57,8 +86,35 @@ public class UserController extends BaseController {
         Integer uid = getUidFromSession(session);
         // session获取到用户的uname
         userService.UpdatePsw(uid, oldPassword, newPassword);
-        return new JsonResult<>(2002);
+        return new JsonResult<>(2003);
     }
+
+    @RequestMapping(path = {"update/avatar"}, method = RequestMethod.POST)
+    public JsonResult<String> updateAvatar(@RequestParam("file") MultipartFile file,
+                                           @RequestParam("uid") String uid,
+                                           @RequestParam("uname") String uname){
+        // 判断文件是否为空
+        if(file.isEmpty()){
+            throw new FileEmptyException("文件为空");
+        }
+        if(file.getSize()>AVATAR_MAX_SIZE){
+            throw new FileSizeException("文件大小超过限制");
+        }
+        // 文件是否符合我们规定的类型
+        String contenType = file.getContentType();
+        if(!AVATAR_TYPE.contains(contenType)){
+            throw new FileTypeException("文件类型不符合");
+        }
+        // 获取到这个文件的名称
+        String usernameType = file.getOriginalFilename();
+        // 保留文件的后缀
+        int index = usernameType.lastIndexOf(".");
+        String sufix = usernameType.substring(index);
+        // 最终组合文件名
+        sufix = objName+uid+"/"+uname+sufix;
+        return userService.uploadAvatar(uid,sufix,file);
+    }
+
 
 
 }

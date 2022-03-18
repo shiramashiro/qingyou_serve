@@ -12,7 +12,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 //将其定义为配置类
 @Configuration
-public class Redisconf {
+public class RedisConf {
     //这是一个固定的模板
     //编写我们自己的config，注册到bean当中
     @Bean

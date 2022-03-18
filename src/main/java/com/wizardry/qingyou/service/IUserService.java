@@ -2,11 +2,13 @@ package com.wizardry.qingyou.service;
 
 
 import com.wizardry.qingyou.entity.User;
+import com.wizardry.qingyou.utils.JsonResult;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 用户模块业务层接口
  */
-public interface UserService {
+public interface IUserService {
 
     /**
      * 用户注册方法
@@ -32,6 +34,14 @@ public interface UserService {
 
     void UpdatePsw(Integer id,String password,String newPassword);
 
-    
+    /**
+     * 用户修改头像接口
+     * @param uid 用户的id
+     * @param objName 完整路径文件
+     * @param file  头像文件
+     * @return  Json串
+     */
+    JsonResult<String> uploadAvatar(String uid,String objName, MultipartFile file);
+
 
 }

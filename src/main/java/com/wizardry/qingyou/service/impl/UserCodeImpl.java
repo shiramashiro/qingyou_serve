@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class UserCodeimpl implements IUserCode {
+public class UserCodeImpl implements IUserCode {
     // 发件人
     @Value("${spring.mail.username}")
     private String from;

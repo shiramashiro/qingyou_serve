@@ -1,28 +1,35 @@
 package com.wizardry.qingyou.service.impl;
 
+import com.aliyun.oss.ClientException;
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSException;
 import com.wizardry.qingyou.entity.User;
 import com.wizardry.qingyou.mapper.UserMapper;
 
-import com.wizardry.qingyou.service.UserService;
+import com.wizardry.qingyou.service.IUserService;
+import com.wizardry.qingyou.utils.JsonResult;
+import com.wizardry.qingyou.utils.OSSUtil;
 import com.wizardry.qingyou.utils.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
 
 @Service
-public class UserServiceImpl implements UserService {
-
+public class UserServiceImpl implements IUserService {
+    // mapper层对象
     @Autowired
     private UserMapper usermapper;
-
-
+    // OSS工具类
+    @Autowired
+    private OSSUtil ossUtil;
 
     /**
      * 用户注册-方法实现
-     *
      * @param user 用户这个对象的数据
      */
     @Override
@@ -70,7 +77,6 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 用户登录-方法实现
-     *
      * @param user 用户对象
      * return 一个压缩过的用户数据
      */
@@ -145,7 +151,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *   用户修改密码模块
+     * 用户修改密码模块
      * @param id    用户id
      * @param oldpassword 用户旧密码
      * @param newPassword  用户新密码
@@ -178,4 +184,28 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * 用户修改头像模块
+     * @param objName 完整路径名
+     * @param file 用户头像的文件
+     * @return json串
+     */
+    @Override
+    public JsonResult<String> uploadAvatar(String uid,String objName, MultipartFile file) {
+        OSS oss = ossUtil.buildOSSClient();
+        try {
+            oss.putObject(ossUtil.packObject(objName,file));
+        } catch (OSSException | ClientException | IOException oe) {
+            return new JsonResult<>(500,"the server occurred error while uploading file failed.");
+        } finally{
+            if (oss!=null) {
+                oss.shutdown();
+            }
+        }
+        // 莫得问题就传递数据了
+        String avatar = "https://norza.cn/"+objName;
+        Integer row = usermapper.updateAvatar(Integer.valueOf(uid),avatar);
+        System.out.println("影响行数为："+row);
+        return new JsonResult<>(2004,"https://norza.cn/"+objName);
+    }
 }
