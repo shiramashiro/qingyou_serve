@@ -18,7 +18,7 @@ public class RedisConf {
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         // 一般为了开发方便，直接使用<String, Object>
-        RedisTemplate<String, Object> template = new RedisTemplate();
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
         //连接工厂
         template.setConnectionFactory(redisConnectionFactory);
         // 序列化配置,使用json将接收到的对象转换为json序列化

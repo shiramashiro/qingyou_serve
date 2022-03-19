@@ -41,7 +41,7 @@ public interface IUserService {
      * @param file  头像文件
      * @return  Json串
      */
-    JsonResult<String> uploadAvatar(String uid,String objName, MultipartFile file);
+    JsonResult<String> updateAvatar(String uid, String objName, MultipartFile file);
 
 
 }

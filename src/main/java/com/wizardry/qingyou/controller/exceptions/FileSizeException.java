@@ -1,4 +1,4 @@
-package com.wizardry.qingyou.controller.ex;
+package com.wizardry.qingyou.controller.exceptions;
 // 文件大小异常
 public class FileSizeException extends FileUploadException{
     public FileSizeException() {

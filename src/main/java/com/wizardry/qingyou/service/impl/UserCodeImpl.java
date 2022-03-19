@@ -26,7 +26,8 @@ public class UserCodeImpl implements IUserCode {
     private RedisUtils redisResult;
 
     /**
-     *  验证码的存储
+     * 验证码的存储
+     *
      * @param userEmail 前端给予的令牌
      */
     @Override
@@ -35,44 +36,41 @@ public class UserCodeImpl implements IUserCode {
         //判断验证码是否过期
         Object codeWhether = redisResult.get(userEmail);
         System.out.println(codeWhether);
-        if(codeWhether!=null){
+        if (codeWhether != null) {
             //验证码未过期
             throw new CodeNotExpiredException("验证码未过期");
         }
         //存储验证码--六位数字or六位数字+字母
-        String code = UUID.randomUUID().toString().substring(0,5);
+        String code = UUID.randomUUID().toString().substring(0, 5);
         //String code = (int)((Math.random() * 9 + 1)* 10000) +"";
         // 短消息对象
         SimpleMailMessage simpleMailMessage = SimpleMailMessageUtil.getSimpleMailMessageutil();
         simpleMailMessage.setFrom(from);
         simpleMailMessage.setTo(userEmail);
         simpleMailMessage.setSubject("找回密码");
-        simpleMailMessage.setText("您的验证码是："+code+",该验证码五分钟内有效，请及时使用");
+        simpleMailMessage.setText("您的验证码是：" + code + ",该验证码五分钟内有效，请及时使用");
         sender.send(simpleMailMessage);
         System.out.println("验证码发送成功！");
         //调用redis存储
-        redisResult.set(userEmail,code,300);
+        redisResult.set(userEmail, code, 300);
         // 验证
-        System.out.println("验证值为："+redisResult.get(userEmail));
+        System.out.println("验证值为：" + redisResult.get(userEmail));
 
     }
 
     /**
      * 验证码正误判断
+     *
      * @param userEmail 前端令牌
-     * @param code  用户输入的验证码
+     * @param code      用户输入的验证码
      */
     @Override
     public void codeConfirm(String userEmail, String code) {
         String codeResult = String.valueOf(redisResult.get(userEmail));
-        System.out.println("redis中存储的验证码为："+codeResult);
-        if(!codeResult.equals(code)){
+        System.out.println("redis中存储的验证码为：" + codeResult);
+        if (!codeResult.equals(code)) {
             // 验证码不正确
             throw new CodeErrorException("验证码错误");
-        }
-        if(codeResult==null){
-            // 验证码过期
-            throw new CodeErrorException("验证码过期");
         }
         System.out.println("验证码正确！");
     }

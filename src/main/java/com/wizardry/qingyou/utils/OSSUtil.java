@@ -31,7 +31,7 @@ public class OSSUtil implements InitializingBean {
     private String bucketName;
 
     // 文件完整路径
-    private String objectname = "wizardry/images/";
+    private String objectname = "wizardry/imgs/";
 
     // 设置共有访问变量
     public static String END_POINT;
@@ -47,15 +47,11 @@ public class OSSUtil implements InitializingBean {
         BUCKET_NAME = bucketName;
     }
 
-    public OSS buildOSSClient(){
-        return new OSSClientBuilder().
-                build(endpoint,
-                        accessKeyId,
-                        accessKeySecret);
+    public OSS buildOSSClient() {
+        return new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
     }
 
     public PutObjectRequest packObject(String objName, MultipartFile file) throws IOException {
-        System.out.println(file.getInputStream());
-        return new PutObjectRequest(bucketName,objName,file.getInputStream());
+        return new PutObjectRequest(bucketName, objName, file.getInputStream());
     }
 }

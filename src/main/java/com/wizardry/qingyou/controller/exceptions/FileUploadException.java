@@ -1,4 +1,4 @@
-package com.wizardry.qingyou.controller.ex;
+package com.wizardry.qingyou.controller.exceptions;
 // 控制层异常基类
 public class FileUploadException extends RuntimeException {
     public FileUploadException() {

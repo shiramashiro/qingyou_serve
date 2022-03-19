@@ -1,4 +1,4 @@
-package com.wizardry.qingyou.controller.ex;
+package com.wizardry.qingyou.controller.exceptions;
 // 文件类型的异常
 public class FileTypeException extends FileUploadException{
     public FileTypeException() {

@@ -1,4 +1,4 @@
-package com.wizardry.qingyou.controller.ex;
+package com.wizardry.qingyou.controller.exceptions;
 
 public class FileStateException extends FileUploadException{
     public FileStateException() {

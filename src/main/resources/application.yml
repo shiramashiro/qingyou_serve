@@ -1,6 +1,11 @@
 server:
   port: 8080
+
 spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 15MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://1.116.123.44:3306/qingyou?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
@@ -22,7 +27,6 @@ aliyun:
       key-id: LTAI5t6HyQ1rKfH4xwpWKrnc
       key-secret: daHsHYPAb6RmWvjWzthR4qniryZ5iX
       bucket-name: generic-data
-
 
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml

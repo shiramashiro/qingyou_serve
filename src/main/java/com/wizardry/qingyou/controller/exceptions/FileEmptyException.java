@@ -1,4 +1,4 @@
-package com.wizardry.qingyou.controller.ex;
+package com.wizardry.qingyou.controller.exceptions;
 // 文件为空的异常
 public class FileEmptyException extends FileUploadException {
     public FileEmptyException() {
