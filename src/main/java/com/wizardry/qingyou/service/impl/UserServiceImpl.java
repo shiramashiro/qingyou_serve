@@ -206,7 +206,7 @@ public class UserServiceImpl implements IUserService {
             if (oss != null) oss.shutdown();
         }
         String avatarPath = "https://norza.cn/" + objName;
-        usermapper.updateAvatar(Integer.valueOf(uid), avatarPath);
+//        usermapper.updateAvatar(Integer.valueOf(uid), avatarPath);
         return new JsonResult<>(2004, avatarPath);
     }
 }

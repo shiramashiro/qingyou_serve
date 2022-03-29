@@ -70,11 +70,10 @@ public interface UserMapper {
     User findByUid(Integer id);
 
     /**
-     *
-     * @param id 前段传递的用户id
+     * @param id     前段传递的用户id
      * @param avatar 前端传递的用户头像数据
      * @return 受影响的行数
      */
-    Integer updateAvatar(@Param("id") Integer id, @Param("avatar")String avatar);
+    Integer updateAvatar(@Param("id") Integer id, @Param("avatar") String avatar);
 
 }

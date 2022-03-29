@@ -17,9 +17,26 @@
                 #{location}, #{constellation}, #{age}, #{avatar}, #{occupation}, #{salt})
     </insert>
 
+    <resultMap id="findByAccountTypeResultMap" type="com.wizardry.qingyou.entity.User">
+        <id property="id" column="id"/>
+        <result property="psw" column="psw"/>
+        <result property="uname" column="uname"/>
+        <result property="email" column="email"/>
+        <result property="createdDate" column="created_date"/>
+        <result property="birthday" column="birthday"/>
+        <result property="signature" column="signature"/>
+        <result property="sex" column="sex"/>
+        <result property="location" column="location"/>
+        <result property="constellation" column="constellation"/>
+        <result property="age" column="age"/>
+        <result property="avatar" column="avatar"/>
+        <result property="occupation" column="occupation"/>
+        <result property="salt" column="salt"/>
+    </resultMap>
+
     <!-- 验证前台传递过来的账户类型 -->
-    <select id="findByAccountType" resultType="com.wizardry.qingyou.entity.User">
-        select*from users
+    <select id="findByAccountType" resultMap="findByAccountTypeResultMap">
+        select * from users
         <where>
             <if test="uname!= null and  uname!='' ">
                 uname = #{uname}
@@ -42,14 +59,16 @@
 
     <!-- 修改密码前缀-查询id -->
     <select id="findByUid" resultType="com.wizardry.qingyou.entity.User">
-        select*
+        select *
         from users
         where id = #{id}
     </select>
 
     <!-- 更新用户的头像 -->
     <update id="updateAvatar">
-        update users set avatar = #{avatar} where id = #{id}
+        update users
+        set avatar = #{avatar}
+        where id = #{id}
     </update>
 
 </mapper>

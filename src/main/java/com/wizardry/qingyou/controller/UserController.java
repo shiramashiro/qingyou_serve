@@ -64,7 +64,6 @@ public class UserController extends BaseController {
         //向session对象中完成数据的绑定,将用户的id和用户名传递给session对象(该对象是全局的)
         session.setAttribute("id", data.getId());
         session.setAttribute("username", data.getUname());
-        System.out.println("登陆成功！");
         // 保存在session中的参数
         /*System.out.println("该用户的id为："+session.getAttribute("id"));
         System.out.println("该用户的uname为："+session.getAttribute("username"));*/
