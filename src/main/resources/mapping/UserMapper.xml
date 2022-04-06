@@ -5,19 +5,10 @@
 
 <mapper namespace="com.wizardry.qingyou.mapper.UserMapper">
 
-    <resultMap id="userMap" type="com.wizardry.qingyou.entity.User">
-        <result column="created_date" property="createdDate"/>
-    </resultMap>
+    <!-- sql片段抽取 -->
+    <sql id="selectUser"> select * from users</sql>
 
-    <!-- 用户模块-插入数据-注册 -->
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into users(id, psw, uname, phone, email, created_date, birthday, signature,
-                          sex, location, constellation, age, avatar, occupation, salt)
-        values (#{id}, #{psw}, #{uname}, #{phone}, #{email}, #{createdDate}, #{birthday}, #{signature}, #{sex},
-                #{location}, #{constellation}, #{age}, #{avatar}, #{occupation}, #{salt})
-    </insert>
-
-    <resultMap id="findByAccountTypeResultMap" type="com.wizardry.qingyou.entity.User">
+    <!--<resultMap id="findByAccountTypeResultMap" type="User">
         <id property="id" column="id"/>
         <result property="psw" column="psw"/>
         <result property="uname" column="uname"/>
@@ -32,11 +23,21 @@
         <result property="avatar" column="avatar"/>
         <result property="occupation" column="occupation"/>
         <result property="salt" column="salt"/>
-    </resultMap>
+    </resultMap>-->
+
+    <!-- 用户模块-插入数据-注册 -->
+    <!--<insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
+        insert into users(id, psw, uname, phone, email, created_date, birthday, signature,
+                          sex, location, constellation, age, avatar, occupation, salt)
+        values (#{id}, #{psw}, #{uname}, #{phone}, #{email}, #{createdDate}, #{birthday}, #{signature}, #{sex},
+                #{location}, #{constellation}, #{age}, #{avatar}, #{occupation}, #{salt})
+    </insert>-->
+
+
 
     <!-- 验证前台传递过来的账户类型 -->
-    <select id="findByAccountType" resultMap="findByAccountTypeResultMap">
-        select * from users
+    <select id="findByAccountType" parameterType="user" resultType="user">
+        <include refid="selectUser" />
         <where>
             <if test="uname!= null and  uname!='' ">
                 uname = #{uname}
@@ -58,9 +59,8 @@
     </update>
 
     <!-- 修改密码前缀-查询id -->
-    <select id="findByUid" resultType="com.wizardry.qingyou.entity.User">
-        select *
-        from users
+    <select id="findByUid" resultType="User">
+        <include refid="selectUser" />
         where id = #{id}
     </select>
 

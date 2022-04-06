@@ -1,26 +1,24 @@
 package com.wizardry.qingyou.mapper;
 
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.wizardry.qingyou.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
-
-@Component
-@Mapper
-public interface UserMapper {
+import org.springframework.stereotype.Repository;
+@Repository
+public interface UserMapper extends BaseMapper<User> {
     /**
      * 注册用户
-     *
      * @param user 用户的数据
      * @return 返回值为受影响的行数，增删改查都会使行数发生修改，可以根据返回值来查看是否修改成功
      */
-    Integer insert(User user);
+    // Integer insertUser(User user);
 
     /**
      * 查询用户是否注册
-     *
      * @param uname 用户名
      * @return 如果找到，返回用户对应的信息，如果没有找到，返回空值
      */
@@ -38,7 +36,6 @@ public interface UserMapper {
 
     /**
      * 查询用户邮箱是否存在
-     *
      * @param email 用户的邮箱
      * @return 用户数据
      */
@@ -47,7 +44,6 @@ public interface UserMapper {
 
     /**
      * 验证用户的账号类型
-     *
      * @param user 用户对象
      * @return 一个数据库中的用户对象
      */
@@ -60,14 +56,6 @@ public interface UserMapper {
      * @return 受影响的行数
      */
     Integer updatePassword(Integer id, @Param("psw") String password);
-
-    /**
-     * 用户id的查询
-     *
-     * @param id 用户的id
-     * @return 一个用户的对象，反之null
-     */
-    User findByUid(Integer id);
 
     /**
      * @param id     前段传递的用户id

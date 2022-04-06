@@ -15,7 +15,7 @@ public interface IUserService {
      *
      * @param user 用户这个对象的数据
      */
-    void register(User user);
+    JsonResult<Void> register(User user);
 
     /**
      *  用户登录

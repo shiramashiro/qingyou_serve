@@ -3,9 +3,7 @@ package com.wizardry.qingyou.controller;
 import com.wizardry.qingyou.service.impl.UserCodeImpl;
 import com.wizardry.qingyou.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 // 邮件相关
 @RestController
@@ -14,8 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class MailController extends BaseController {
     @Autowired
     private UserCodeImpl usercodImpl;
+
     // 发送验证码
-    @RequestMapping("send")
+    @GetMapping("send")
     public JsonResult<Void> send(String userEmail){
         // 目前就给用户的邮箱
         usercodImpl.StorageCode(userEmail);
@@ -23,7 +22,8 @@ public class MailController extends BaseController {
         return new JsonResult<>(2003);
         //return "success";
     }
-    @RequestMapping("confirm")
+
+    @PostMapping("confirm")
     // 得到验证码进行判断
     public JsonResult<Void> identification(String userEmail,String code){
         usercodImpl.codeConfirm(userEmail,code);
