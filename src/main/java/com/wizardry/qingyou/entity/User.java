@@ -31,7 +31,7 @@ public class User implements Serializable {
     private String sex;
     private String location;
     private String constellation;
-    private int age;
+    private String age;
     private String avatar;
     private String occupation;
     private String salt;

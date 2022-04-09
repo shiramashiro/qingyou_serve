@@ -14,12 +14,14 @@ import javax.servlet.http.HttpSession;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
-
+// 不返回页面，前后端分离
 @RestController
+// 跨域请求
 @CrossOrigin
+// 请求一级目录
 @RequestMapping("users")
 public class UserController extends BaseController {
-    // 用户模块业务层
+    // 业务层对象注入
     @Autowired
     private UserServiceImpl service;
 
@@ -28,7 +30,7 @@ public class UserController extends BaseController {
      * @param user 用户数据
      * @return Json对象
      */
-    @PostMapping("register")
+    @PostMapping("reg")
     public JsonResult<Void> register(@RequestBody User user) {
         // 假设有异常产生会自动跳转到基类当中处理的方法，注册成功为2000
         return service.register(user);
@@ -41,7 +43,7 @@ public class UserController extends BaseController {
      * @param session 无论是哪种类型登录成功，最终只保存用户名的方式
      * @return Json对象
      */
-    @PostMapping(path = "login")
+    @PostMapping("login")
     public JsonResult<User> login(@RequestBody User user, HttpSession session) {
         // 调用接口当中的login方法，该方法先进行查询用户的操作，查询完毕后返回一个user对象
         User data = service.login(user);
@@ -78,6 +80,23 @@ public class UserController extends BaseController {
                                            @RequestParam("file") MultipartFile file) {
         return service.updateAvatar(uid, uname, file);
     }
+
+    // 修改用户名
+    @RequestMapping("update/uname")
+    public JsonResult<Void> updateUname(@RequestBody User user){
+        return service.updateInformation(user,2005);
+    }
+    // 修改用户名
+    @RequestMapping("update/sex")
+    public JsonResult<Void> updateSex(@RequestBody User user){
+        return service.updateInformation(user,2006);
+    }
+    // 修改用户名
+    @RequestMapping("update/Signature")
+    public JsonResult<Void> updateSignature(@RequestBody User user){
+        return service.updateInformation(user,2007);
+    }
+
 
 
 }

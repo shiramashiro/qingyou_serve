@@ -33,3 +33,5 @@ mybatis-plus:
   mapper-locations: classpath:mapping/*Mapper.xml
   # 实体类设置别名
   type-aliases-package: com.wizardry.qingyou.entity
+  #configuration:
+    # log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

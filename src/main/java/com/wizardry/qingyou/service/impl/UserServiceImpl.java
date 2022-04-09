@@ -77,9 +77,13 @@ public class UserServiceImpl implements IUserService {
         if(byAccountType==null){
             throw new UserNotFoundException(accountError);
         }
+
         // 4、将参数密码和获取到的盐值进行md5的算法进行匹配
         String newMd5Password = serviceUtil.md5Password(user.getPsw(),
                 byAccountType.getSalt());
+        System.out.println("用户输入的密码是："+user.getPsw()+
+                "\n"+"数据库中的密码是："+
+                byAccountType.getPsw()+"\n加密后的密码为："+newMd5Password);
         // 5、匹配失败
         if (!newMd5Password.equals(byAccountType.getPsw())) {
             throw new PasswordNotMatchException("密码不正确");
@@ -142,5 +146,22 @@ public class UserServiceImpl implements IUserService {
         String avatarPath = "http://norza.cn/" + objName;
 //        usermapper.updateAvatar(Integer.valueOf(uid), avatarPath);
         return new JsonResult<>(2004, avatarPath);
+    }
+
+    /**
+     * 修改用户的各项信息
+     * @param user    用户对象
+     * @param state   状态码
+     * @return Json串
+     */
+    @Override
+    public JsonResult<Void> updateInformation(User user,Integer state) {
+        // MP的动态SQL，里面有什么实体属性修改库中对应的属性
+        int i = userMapper.updateById(user);
+        if(i!=1){
+            // 修改用户数据时发生未知异常
+            throw new UpdateException("在更新时产生未知的异常");
+        }
+        return new JsonResult<>(state);
     }
 }

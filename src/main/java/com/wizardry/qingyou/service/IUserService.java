@@ -43,5 +43,11 @@ public interface IUserService {
      */
     JsonResult<String> updateAvatar(String uid, String objName, MultipartFile file);
 
-
+    /**
+     * 修改用户名；性别；个性签名
+     * @param user    用户对象
+     * @param state   状态码
+     * @return        Json串
+     */
+    JsonResult<Void> updateInformation(User user,Integer state);
 }
