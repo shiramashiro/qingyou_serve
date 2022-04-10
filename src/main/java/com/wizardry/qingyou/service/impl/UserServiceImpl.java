@@ -81,15 +81,15 @@ public class UserServiceImpl implements IUserService {
         // 4、将参数密码和获取到的盐值进行md5的算法进行匹配
         String newMd5Password = serviceUtil.md5Password(user.getPsw(),
                 byAccountType.getSalt());
-        System.out.println("用户输入的密码是："+user.getPsw()+
+        /*System.out.println("用户输入的密码是："+user.getPsw()+
                 "\n"+"数据库中的密码是："+
-                byAccountType.getPsw()+"\n加密后的密码为："+newMd5Password);
+                byAccountType.getPsw()+"\n加密后的密码为："+newMd5Password);*/
         // 5、匹配失败
         if (!newMd5Password.equals(byAccountType.getPsw())) {
             throw new PasswordNotMatchException("密码不正确");
         }
         // 6、压缩过后的用户数据
-        return serviceUtil.resultUser(byAccountType);
+        return byAccountType;
     }
 
 
