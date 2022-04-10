@@ -92,7 +92,7 @@ public class UserController extends BaseController {
         return service.updateInformation(user,2006);
     }
     // 修改用户名
-    @RequestMapping("update/Signature")
+    @RequestMapping("update/signature")
     public JsonResult<Void> updateSignature(@RequestBody User user){
         return service.updateInformation(user,2007);
     }
